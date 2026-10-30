@@ -1,0 +1,8 @@
+build/
+.agent/
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+__pycache__/

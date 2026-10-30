@@ -1,0 +1,26 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: recursive }
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ninja-build gcc-arm-none-eabi libnewlib-arm-none-eabi
+      - name: Install Renode
+        run: |
+          mkdir -p ~/.local/opt/renode ~/.local/bin
+          wget -qO /tmp/renode.tgz https://builds.renode.io/renode-latest.linux-portable-dotnet.tar.gz
+          tar xf /tmp/renode.tgz -C ~/.local/opt/renode --strip-components=1
+          python3 -m venv ~/.local/opt/renode-venv
+          ~/.local/opt/renode-venv/bin/pip install -q -r ~/.local/opt/renode/tests/requirements.txt
+          ln -s ~/.local/opt/renode/renode-test ~/.local/bin/renode-test
+      - run: ./ci/check.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: firmware
+          path: |
+            build/Release/*.elf
+            build/Release/*.bin
+          if-no-files-found: ignore
