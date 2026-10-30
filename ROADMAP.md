@@ -3,7 +3,7 @@
 One task ≈ one day. The agent takes the first unchecked item.
 
 ## Phase 0 — Toolchain & boot
-- [ ] CMake project + `cmake/arm-none-eabi.cmake` toolchain, `.gitignore`, `.clang-format`
+- [x] CMake project + `cmake/arm-none-eabi.cmake` toolchain, `.gitignore`, `.clang-format`
 - [ ] Add CMSIS_5 core and STMicroelectronics `cmsis-device-f4` as git submodules (pinned tags)
 - [ ] Linker script for STM32F401CC (256K flash / 64K RAM), startup code in C (vector table, .data/.bss init, FPU enable)
 - [ ] `renode/blackpill-f401.repl` (F401 memory map, PC13 LED, USART1/2) + `blackpill.resc`, boot to `main` verified

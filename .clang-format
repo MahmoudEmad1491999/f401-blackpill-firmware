@@ -1,0 +1,55 @@
+---
+# clang-format configuration for STM32F401 bare-metal C firmware.
+# Targets clang-format 14+.  Run: clang-format -i <file>
+Language:        Cpp        # covers C as well
+BasedOnStyle:    LLVM
+
+# --- Indentation & width ---------------------------------------------------
+IndentWidth:            4
+ContinuationIndentWidth: 4
+ColumnLimit:            100
+TabWidth:               4
+UseTab:                 Never
+
+# --- Brace placement -------------------------------------------------------
+BreakBeforeBraces:      Linux  # function braces on new line, control on same
+
+# --- Spacing ---------------------------------------------------------------
+SpaceBeforeParens:          ControlStatements
+SpaceInEmptyParentheses:    false
+SpaceAfterCStyleCast:       false
+SpacesInParentheses:        false
+SpacesInSquareBrackets:     false
+SpaceBeforeSquareBrackets:  false
+
+# --- Pointer / reference alignment -----------------------------------------
+PointerAlignment:       Right   # "uint32_t *ptr", not "uint32_t* ptr"
+
+# --- Include ordering (keep CMSIS first, then project headers) -------------
+IncludeBlocks:          Regroup
+IncludeCategories:
+  # CMSIS / device headers
+  - Regex:    '^<(cmsis|stm32|core_cm)'
+    Priority: 1
+  # Standard C headers
+  - Regex:    '^<[a-z].*\.h>'
+    Priority: 2
+  # Project headers
+  - Regex:    '^"'
+    Priority: 3
+SortIncludes:           CaseInsensitive
+
+# --- Struct / initialiser alignment ----------------------------------------
+AlignConsecutiveMacros:      AcrossEmptyLines
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignTrailingComments:       true
+
+# --- Misc ------------------------------------------------------------------
+MaxEmptyLinesToKeep:         2
+KeepEmptyLinesAtTheStartOfBlocks: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+ReflowComments:              true
+...
