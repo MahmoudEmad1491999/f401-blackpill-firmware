@@ -1,35 +1,24 @@
-# 0002 — CMSIS submodules: version pinning and CMake exposure
+# 0002 — CMSIS submodules: added then removed
 
 ## Context
-The firmware needs CMSIS core headers (core_cm4.h, cmsis_gcc.h, …) and STM32F4
-device headers (stm32f401xc.h, system_stm32f4xx.h).  Both are distributed as git
-repositories with tagged releases.
+An earlier attempt added `CMSIS_5` and `cmsis-device-f4` as git submodules to
+`third_party/` and used them in `app/cmsis_header_test.c`.  This was superseded
+when the project policy was formalised as 100% bare metal (see CLAUDE.md).
 
 ## Decision
-Two git submodules in `third_party/`, each pinned to an explicit tag:
+Both submodules were removed.  `third_party/CMakeLists.txt` is now a stub.
+All register definitions are hand-written in `regs/` from RM0368/PM0214/DS9716.
 
-| Submodule             | Tag     | Provides                              |
-|-----------------------|---------|---------------------------------------|
-| ARM-software/CMSIS_5  | 5.9.0   | CMSIS/Core/Include (core_cm4.h, …)    |
-| STM/cmsis-device-f4   | v2.6.11 | Include/stm32f401xc.h, system header  |
-
-`third_party/CMakeLists.txt` exposes them as `cmsis_core` and `cmsis_device_f4`
-INTERFACE targets.  Both use `SYSTEM` include directories so vendor headers are
-treated as system headers and do not trigger our `-Wall/-Wextra/-Werror` policy.
-
-## Alternatives considered
-- **CMSIS-Pack / ST Cube** — heavy tooling, not build-system-neutral.
-- **Copy headers into the repo** — loses upstream patches and provenance.
-- **FetchContent** — harder to pin reproducibly; slower first build on CI.
+## Why CMSIS was not kept
+- CI's bare-metal guard rejects `#include <stm32...>` / `#include <core_cm...>`
+  in firmware directories.
+- CMSIS headers drag in `system_stm32f4xx.c` clock init and `_syscalls.c`
+  newlib stubs — both are written from scratch in this project.
+- Submodules add `git submodule update --init` overhead and a network dependency
+  that conflicts with the "everything hand-written" CV goal.
 
 ## Consequences
-- `git submodule update --init --recursive` is required before building (already
-  done automatically in `ci/check.sh`).
-- `system_stm32f4xx.c` (startup clock init) lives in
-  `cmsis-device-f4/Source/Templates/`; it will be compiled in Phase 0 Task 3
-  alongside the linker script and Reset_Handler.
-- CMSIS-DSP and CMSIS-NN (also in CMSIS_5) are not exposed yet; add them if
-  needed in Phase 3/9.
-
-## Renode vs silicon gap
-None for this task — submodule addition is purely build-system work.
+- No vendor headers anywhere in the tree.
+- `third_party/` is kept as an empty tracked directory for possible future use
+  (e.g., a vendored test double or a Python script); it will never hold ARM/ST
+  licensed code.

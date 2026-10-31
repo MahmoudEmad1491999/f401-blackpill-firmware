@@ -66,8 +66,7 @@ target_link_libraries(firmware_config INTERFACE
 # ---------------------------------------------------------------------------
 # Subdirectories — uncommented as each Phase-0 task lands:
 # ---------------------------------------------------------------------------
-add_subdirectory(third_party)  # task 2: CMSIS submodules
-#   add_subdirectory(startup)  # task 3: linker script + Reset_Handler
+#   add_subdirectory(startup)  # task: linker script + Reset_Handler
 #   add_subdirectory(drivers)  # Phase 1+
 #   add_subdirectory(lib)      # Phase 2+
-add_subdirectory(app)          # task 2: compile-test; real app from Phase 1+
+add_subdirectory(app)          # compile-test placeholder; real app from Phase 1+

@@ -1,4 +1,6 @@
-# Compile-test: verify CMSIS headers are reachable and the device macros are
-# correct.  Compiled as an OBJECT library (no linker script needed yet).
-add_library(cmsis_header_test OBJECT cmsis_header_test.c)
-target_link_libraries(cmsis_header_test PRIVATE firmware_config cmsis_device_f4)
+# Compile-test placeholder: verify the toolchain flags are correct for
+# bare-metal Cortex-M4F.  Built as an OBJECT library so no linker script
+# is required yet.  Will become the real application executable in Phase 1
+# once the linker script and startup code land.
+add_library(app_compile_test OBJECT main.c)
+target_link_libraries(app_compile_test PRIVATE firmware_config)

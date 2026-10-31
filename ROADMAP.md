@@ -3,7 +3,7 @@
 One task ≈ one day. The agent takes the first unchecked item. 100 % bare metal: no CMSIS, no HAL, no libc, no RTOS library.
 
 ## Phase 0 — Toolchain & boot from nothing
-- [ ] CMake project + `cmake/arm-none-eabi.cmake` (freestanding, -nostdlib, libgcc only), `.gitignore`, `.clang-format`; remove any CMSIS/vendor files or submodules if present
+- [x] CMake project + `cmake/arm-none-eabi.cmake` (freestanding, -nostdlib, libgcc only), `.gitignore`, `.clang-format`; remove any CMSIS/vendor files or submodules if present
 - [ ] Hand-written linker script for STM32F401CC (256K flash / 64K RAM): sections, stack, symbols for startup
 - [ ] Startup in C + minimal asm: full vector table (all F401 IRQs from RM0368 table 38), Reset_Handler, .data/.bss init, weak default handlers
 - [ ] `core/cpu.h`: inline-asm intrinsics (irq enable/disable, DSB/ISB/DMB, WFI/WFE, PRIMASK/BASEPRI/CONTROL/PSP/MSP access)

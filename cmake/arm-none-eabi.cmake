@@ -38,18 +38,20 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 # ---------------------------------------------------------------------------
 set(_MCU_FLAGS "-mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard")
 
-set(CMAKE_C_FLAGS_INIT          "${_MCU_FLAGS}")
-set(CMAKE_CXX_FLAGS_INIT        "${_MCU_FLAGS}")
+# -ffreestanding: no standard startup, no implicit standard library includes,
+# no assumptions about standard function semantics.
+set(CMAKE_C_FLAGS_INIT          "${_MCU_FLAGS} -ffreestanding")
+set(CMAKE_CXX_FLAGS_INIT        "${_MCU_FLAGS} -ffreestanding")
 set(CMAKE_ASM_FLAGS_INIT        "${_MCU_FLAGS} -x assembler-with-cpp")
 
 # ---------------------------------------------------------------------------
 # Linker flags
-# -specs=nano.specs   : newlib-nano (small printf, no float by default)
-# -specs=nosys.specs  : stub syscalls so link succeeds without an OS
+# -nostdlib           : do not link libc, libstdc++, or crt0
+# -lgcc               : keep compiler support routines (__aeabi_*, __divsi3…)
 # -Wl,--gc-sections   : strip dead code/data (added per-target when ready)
 # ---------------------------------------------------------------------------
 set(CMAKE_EXE_LINKER_FLAGS_INIT
-    "${_MCU_FLAGS} -specs=nano.specs -specs=nosys.specs")
+    "${_MCU_FLAGS} -nostdlib -lgcc")
 
 # ---------------------------------------------------------------------------
 # Search-path policy: host tools from PATH, libraries from sysroot only.

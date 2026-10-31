@@ -25,16 +25,18 @@ SpaceBeforeSquareBrackets:  false
 # --- Pointer / reference alignment -----------------------------------------
 PointerAlignment:       Right   # "uint32_t *ptr", not "uint32_t* ptr"
 
-# --- Include ordering (keep CMSIS first, then project headers) -------------
+# --- Include ordering (freestanding C headers first, then project headers) --
+# Only stdint.h / stdbool.h / stddef.h and a handful of other freestanding
+# headers are permitted in firmware (see CLAUDE.md).
 IncludeBlocks:          Regroup
 IncludeCategories:
-  # CMSIS / device headers
-  - Regex:    '^<(cmsis|stm32|core_cm)'
+  # Freestanding C headers (the only angle-bracket headers allowed in firmware)
+  - Regex:    '^<(stdint|stdbool|stddef|stdarg|limits|float|iso646)\.h>'
     Priority: 1
-  # Standard C headers
-  - Regex:    '^<[a-z].*\.h>'
+  # Catch-all for any remaining angle-bracket headers (host tests, tools)
+  - Regex:    '^<'
     Priority: 2
-  # Project headers
+  # Project headers (regs/, core/, drivers/, lib/, app/)
   - Regex:    '^"'
     Priority: 3
 SortIncludes:           CaseInsensitive
