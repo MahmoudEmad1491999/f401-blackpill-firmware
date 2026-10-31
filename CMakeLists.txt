@@ -64,9 +64,14 @@ target_link_libraries(firmware_config INTERFACE
 )
 
 # ---------------------------------------------------------------------------
+# Place all executables in build/<Config>/ so ci/check.sh finds *.elf.
+# ---------------------------------------------------------------------------
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+# ---------------------------------------------------------------------------
 # Subdirectories — uncommented as each Phase-0 task lands:
 # ---------------------------------------------------------------------------
-#   add_subdirectory(startup)  # task: linker script + Reset_Handler
+add_subdirectory(startup)      # linker script + stub Reset_Handler
 #   add_subdirectory(drivers)  # Phase 1+
 #   add_subdirectory(lib)      # Phase 2+
-add_subdirectory(app)          # compile-test placeholder; real app from Phase 1+
+add_subdirectory(app)          # compile-test + blackpill_f401 ELF

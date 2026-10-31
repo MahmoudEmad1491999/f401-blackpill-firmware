@@ -28,9 +28,26 @@ shopt -s nullglob
 elfs=(build/Release/*.elf)
 for e in "${elfs[@]}"; do
   arm-none-eabi-size "$e"
+
+  # Guard against accidental libc linkage
   if arm-none-eabi-nm "$e" | grep -wE '_sbrk|malloc|free|printf|puts|_write|_impure_ptr|__libc_init_array'; then
     echo "libc symbols linked into $e"; exit 1
   fi
+
+  # Verify required linker-script symbols are present (Phase-0 linker script task)
+  echo "== linker-script symbols in $e =="
+  for sym in _estack _sdata _edata _sidata _sbss _ebss _sstack; do
+    if ! arm-none-eabi-nm "$e" | grep -q " ${sym}$"; then
+      echo "ERROR: linker symbol '${sym}' missing from $e"; exit 1
+    fi
+  done
+
+  # _estack must equal top of SRAM: 0x20010000 (64 K: DS9716 Table 3)
+  estack=$(arm-none-eabi-nm "$e" | awk "/ _estack\$/{print \$1}")
+  if [ "$estack" != "20010000" ]; then
+    echo "ERROR: _estack=0x${estack}, expected 0x20010000 (top of 64 K SRAM)"; exit 1
+  fi
+  echo "  _estack=0x${estack}  OK"
 done
 
 if [ -f tests/host/CMakeLists.txt ]; then
