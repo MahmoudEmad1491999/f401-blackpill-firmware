@@ -1,6 +1,5 @@
-# startup_stub: minimal vector table + Reset_Handler.
-# Replaced by the full startup in the next Phase-0 task.
-add_library(startup_stub OBJECT
-    startup_stub.c
+# startup: full vector table + Reset_Handler (.data/.bss init) + weak handlers.
+add_library(startup OBJECT
+    startup.c
 )
-target_link_libraries(startup_stub PRIVATE firmware_config)
+target_link_libraries(startup PRIVATE firmware_config)
