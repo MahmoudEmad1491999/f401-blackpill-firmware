@@ -54,6 +54,12 @@ target_compile_definitions(firmware_defs INTERFACE
 )
 
 # ---------------------------------------------------------------------------
+# core — header-only intrinsics (cpu.h and future core/ headers).
+# Must be defined before firmware_config so it can be propagated.
+# ---------------------------------------------------------------------------
+add_subdirectory(core)
+
+# ---------------------------------------------------------------------------
 # firmware_config — umbrella target every firmware target links against
 # ---------------------------------------------------------------------------
 add_library(firmware_config INTERFACE)
@@ -61,6 +67,7 @@ target_link_libraries(firmware_config INTERFACE
     firmware_warnings
     firmware_opts
     firmware_defs
+    core
 )
 
 # ---------------------------------------------------------------------------
