@@ -8,7 +8,7 @@ One task ≈ one day. The agent takes the first unchecked item. 100 % bare metal
 - [x] Startup in C + minimal asm: full vector table (all F401 IRQs from RM0368 table 38), Reset_Handler, .data/.bss init, weak default handlers
 - [x] `core/cpu.h`: inline-asm intrinsics (irq enable/disable, DSB/ISB/DMB, WFI/WFE, PRIMASK/BASEPRI/CONTROL/PSP/MSP access)
 - [x] `regs/scb.h` + FPU enable via CPACR in startup (PM0214 4.6) with offset asserts
-- [ ] `regs/rcc.h`, `regs/gpio.h` hand-written with `_Static_assert(offsetof)` for every register
+- [x] `regs/rcc.h`, `regs/gpio.h` hand-written with `_Static_assert(offsetof)` for every register
 - [ ] Host test checking all peripheral base addresses against the DS9716 memory map table
 - [ ] `renode/blackpill-f401.repl` (F401 memory map, PC13 LED, USART1/2) + `blackpill.resc`, boot to `main` verified
 - [ ] First Robot test: firmware boots and toggles PC13 (GPIO state assertion)

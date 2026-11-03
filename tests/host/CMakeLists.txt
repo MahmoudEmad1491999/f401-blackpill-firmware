@@ -29,3 +29,21 @@ add_executable(test_scb test_scb.c)
 target_include_directories(test_scb PRIVATE ${FW_ROOT})
 target_compile_options(test_scb PRIVATE -Wall -Wextra -Werror)
 add_test(NAME scb_register_map_compile COMMAND test_scb)
+
+# ---------------------------------------------------------------------------
+# test_rcc — compile-time checks for regs/rcc.h: offset asserts, struct size,
+# and key bit-field constant values (RM0368 §6.3).
+# ---------------------------------------------------------------------------
+add_executable(test_rcc test_rcc.c)
+target_include_directories(test_rcc PRIVATE ${FW_ROOT})
+target_compile_options(test_rcc PRIVATE -Wall -Wextra -Werror)
+add_test(NAME rcc_register_map_compile COMMAND test_rcc)
+
+# ---------------------------------------------------------------------------
+# test_gpio — compile-time checks for regs/gpio.h: offset asserts, struct size,
+# and key bit-field constant values (RM0368 §8.4).
+# ---------------------------------------------------------------------------
+add_executable(test_gpio test_gpio.c)
+target_include_directories(test_gpio PRIVATE ${FW_ROOT})
+target_compile_options(test_gpio PRIVATE -Wall -Wextra -Werror)
+add_test(NAME gpio_register_map_compile COMMAND test_gpio)
