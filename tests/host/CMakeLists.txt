@@ -20,3 +20,12 @@ add_executable(test_cpu test_cpu.c)
 target_include_directories(test_cpu PRIVATE ${FW_ROOT})
 target_compile_options(test_cpu PRIVATE -Wall -Wextra -Werror)
 add_test(NAME cpu_intrinsics_header_compile COMMAND test_cpu)
+
+# ---------------------------------------------------------------------------
+# test_scb — compile-time checks for regs/scb.h: offset asserts, struct size,
+# and key bit-field constant values (PM0214 §4.3, §4.6.1).
+# ---------------------------------------------------------------------------
+add_executable(test_scb test_scb.c)
+target_include_directories(test_scb PRIVATE ${FW_ROOT})
+target_compile_options(test_scb PRIVATE -Wall -Wextra -Werror)
+add_test(NAME scb_register_map_compile COMMAND test_scb)

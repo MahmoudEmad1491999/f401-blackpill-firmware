@@ -13,6 +13,9 @@
 
 #include <stdint.h>
 
+#include "core/cpu.h"
+#include "regs/scb.h"
+
 /* Linker-script symbols (stm32f401cc.ld) */
 extern uint32_t _estack;   /* initial MSP: top of SRAM             (PM0214 §2.3.4) */
 extern uint32_t _sidata;   /* LMA of .data image in FLASH */
@@ -234,18 +237,26 @@ void Default_Handler(void)
 /* ---------------------------------------------------------------------------
  * Reset_Handler — first code executed after every reset.
  *
- * 1. Copy the .data initialisation image from FLASH (LMA _sidata) to SRAM.
- * 2. Zero the .bss segment.
- * 3. Call main().
+ * 1. Enable FPU (CPACR CP10/CP11 full access) — PM0214 §4.6.1.
+ * 2. Copy the .data initialisation image from FLASH (LMA _sidata) to SRAM.
+ * 3. Zero the .bss segment.
+ * 4. Call main().
  *
+ * FPU is enabled before the .data copy so that the toolchain may freely emit
+ * FP instructions for initialisers or function prologues.
  * Word-at-a-time loops rely on the linker script aligning both regions to 4
  * bytes (ALIGN(4) in stm32f401cc.ld).
- *
- * FPU enable (CPACR CP10/CP11) is added in the regs/scb.h task (ROADMAP).
  * --------------------------------------------------------------------------- */
 __attribute__((noreturn))
 void Reset_Handler(void)
 {
+    /* Enable FPU: grant full access to CP10 (FPv4-SP) and CP11 (must match).
+     * DSB + ISB ensure the write is visible before any subsequent FP instruction.
+     * PM0214 §4.6.1. */
+    SCB->CPACR |= SCB_CPACR_FPU_FULL;
+    __DSB();
+    __ISB();
+
     uint32_t *src = &_sidata;
     uint32_t *dst = &_sdata;
     while (dst < &_edata) {
