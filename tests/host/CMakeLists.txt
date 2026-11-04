@@ -47,3 +47,12 @@ add_executable(test_gpio test_gpio.c)
 target_include_directories(test_gpio PRIVATE ${FW_ROOT})
 target_compile_options(test_gpio PRIVATE -Wall -Wextra -Werror)
 add_test(NAME gpio_register_map_compile COMMAND test_gpio)
+
+# ---------------------------------------------------------------------------
+# test_base_addrs — compile-time cross-check: every _BASE macro defined in
+# regs/ is compared against the DS9716 Rev 7 §2.3 Table 2 reference values.
+# ---------------------------------------------------------------------------
+add_executable(test_base_addrs test_base_addrs.c)
+target_include_directories(test_base_addrs PRIVATE ${FW_ROOT})
+target_compile_options(test_base_addrs PRIVATE -Wall -Wextra -Werror)
+add_test(NAME peripheral_base_addrs_ds9716 COMMAND test_base_addrs)

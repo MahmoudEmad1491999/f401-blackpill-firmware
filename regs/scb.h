@@ -65,8 +65,9 @@ _Static_assert(offsetof(scb_regs_t, AFSR)   == 0x03CU, "SCB AFSR offset");
 _Static_assert(offsetof(scb_regs_t, CPACR)  == 0x088U, "SCB CPACR offset");
 _Static_assert(sizeof(scb_regs_t)           == 0x08CU, "scb_regs_t total size");
 
-/* SCB base address — PM0214 Table 2-1, DS9716 Table 2 */
-#define SCB  ((scb_regs_t *)0xE000ED00UL)
+/* SCB base address — PM0214 §2.1 Table 2-1, DS9716 §2.3 Table 2 */
+#define SCB_BASE  0xE000ED00UL
+#define SCB       ((scb_regs_t *)SCB_BASE)
 
 /* ---------------------------------------------------------------------------
  * ICSR — Interrupt Control and State Register  (PM0214 §4.3.2)

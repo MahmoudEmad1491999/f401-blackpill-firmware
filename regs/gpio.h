@@ -45,14 +45,21 @@ _Static_assert(offsetof(gpio_regs_t, LCKR)   == 0x1CU, "GPIO LCKR offset");
 _Static_assert(offsetof(gpio_regs_t, AFR)    == 0x20U, "GPIO AFR[0] offset");
 _Static_assert(sizeof(gpio_regs_t)            == 0x28U, "gpio_regs_t total size");
 
-/* GPIO port base addresses — DS9716 Table 2, RM0368 §2.3
+/* GPIO port base addresses — DS9716 §2.3 Table 2, RM0368 §2.3
  * F401 has ports A, B, C, D, E, H (no F or G in this device family). */
-#define GPIOA  ((gpio_regs_t *)0x40020000UL)
-#define GPIOB  ((gpio_regs_t *)0x40020400UL)
-#define GPIOC  ((gpio_regs_t *)0x40020800UL)
-#define GPIOD  ((gpio_regs_t *)0x40020C00UL)
-#define GPIOE  ((gpio_regs_t *)0x40021000UL)
-#define GPIOH  ((gpio_regs_t *)0x40021C00UL)
+#define GPIOA_BASE  0x40020000UL
+#define GPIOB_BASE  0x40020400UL
+#define GPIOC_BASE  0x40020800UL
+#define GPIOD_BASE  0x40020C00UL
+#define GPIOE_BASE  0x40021000UL
+#define GPIOH_BASE  0x40021C00UL
+
+#define GPIOA  ((gpio_regs_t *)GPIOA_BASE)
+#define GPIOB  ((gpio_regs_t *)GPIOB_BASE)
+#define GPIOC  ((gpio_regs_t *)GPIOC_BASE)
+#define GPIOD  ((gpio_regs_t *)GPIOD_BASE)
+#define GPIOE  ((gpio_regs_t *)GPIOE_BASE)
+#define GPIOH  ((gpio_regs_t *)GPIOH_BASE)
 
 /* ---------------------------------------------------------------------------
  * MODER — Port mode register  (RM0368 §8.4.1)

@@ -77,8 +77,9 @@ _Static_assert(offsetof(rcc_regs_t, PLLI2SCFGR)== 0x84U, "RCC PLLI2SCFGR offset"
 _Static_assert(offsetof(rcc_regs_t, DCKCFGR)   == 0x8CU, "RCC DCKCFGR offset");
 _Static_assert(sizeof(rcc_regs_t)               == 0x90U, "rcc_regs_t total size");
 
-/* RCC base address — DS9716 Table 2, RM0368 §2.3 */
-#define RCC  ((rcc_regs_t *)0x40023800UL)
+/* RCC base address — DS9716 §2.3 Table 2, RM0368 §2.3 */
+#define RCC_BASE  0x40023800UL
+#define RCC       ((rcc_regs_t *)RCC_BASE)
 
 /* ---------------------------------------------------------------------------
  * CR — Clock control register  (RM0368 §6.3.1)
